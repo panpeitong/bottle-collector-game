@@ -1,0 +1,97 @@
+<h2>游戏界面流程</h2>
+<p class="subtitle">6个核心页面 + 贩卖机为核心锚点</p>
+
+<div class="section">
+  <h3>📱 主界面结构（底部Tab栏）</h3>
+  <div style="display: flex; gap: 8px; justify-content: center; margin: 12px 0;">
+    <div class="placeholder" style="flex:1; text-align:center; font-size:12px;">🏠<br/>贩卖机</div>
+    <div class="placeholder" style="flex:1; text-align:center; font-size:12px;">📦<br/>我的瓶子</div>
+    <div class="placeholder" style="flex:1; text-align:center; font-size:12px;">⚗️<br/>合成台</div>
+    <div class="placeholder" style="flex:1; text-align:center; font-size:12px;">💱<br/>交易</div>
+    <div class="placeholder" style="flex:1; text-align:center; font-size:12px;">📖<br/>图鉴</div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🏠 贩卖机页（主页·核心锚点）</h3>
+  <div style="border: 2px solid #FF9800; border-radius: 12px; padding: 16px; background: #FFF8E1;">
+    <div style="display: flex; gap: 12px;">
+      <div style="flex: 1;">
+        <div class="placeholder" style="height: 180px; background: #E3F2FD; text-align: center;">
+          <div style="font-size: 60px;">🕹️</div>
+          [贩卖机像素画展示区]
+        </div>
+        <div style="display: flex; gap: 4px; margin-top: 8px;">
+          <span class="mock-button" style="background:#FF9800;color:white;padding:3px 8px;border-radius:4px;">← 切换</span>
+          <span class="mock-button" style="background:#FF9800;color:white;padding:3px 8px;border-radius:4px;">切换 →</span>
+        </div>
+      </div>
+      <div style="flex: 1; font-size: 13px;">
+        <div style="margin-bottom: 6px;"><strong>☕ 咖啡贩卖机</strong> <span style="color:#888;">Lv.1</span></div>
+        <div style="margin-bottom: 4px;">🪙 单抽：<strong>10金币</strong></div>
+        <div style="margin-bottom: 4px;">🪙 十连抽：<strong>90金币</strong></div>
+        <div style="margin-bottom: 8px; font-size: 11px; color: #888;">奖池：咖啡瓶 × 12种 | 传说 0.5%</div>
+        <div class="mock-button" style="background: #FF5722; color: white; padding: 8px 16px; border-radius: 8px; text-align: center;">🎰 抽一瓶</div>
+        <div style="font-size: 11px; margin-top: 4px; color: #888;">余额：🪙 250</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>📦 我的瓶子（背包页）</h3>
+  <div style="border: 2px solid #4CAF50; border-radius: 12px; padding: 16px; background: #E8F5E9;">
+    <div style="font-size: 12px; margin-bottom: 8px;">持有 <strong>47</strong> 种瓶子 | 重复共计 <strong>128</strong> 瓶</div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+      <div class="placeholder" style="text-align:center; font-size:10px; padding:6px;">🧃×5<br/>可乐</div>
+      <div class="placeholder" style="text-align:center; font-size:10px; padding:6px;">🥤×3<br/>雪碧</div>
+      <div class="placeholder" style="text-align:center; font-size:10px; padding:6px;">☕×2<br/>美式</div>
+      <div class="placeholder" style="text-align:center; font-size:10px; padding:6px;">🧋×1<br/>拿铁</div>
+      <div class="placeholder" style="text-align:center; font-size:10px; padding:6px;">🍵×4<br/>抹茶</div>
+      <div class="placeholder" style="text-align:center; font-size:10px; padding:6px;">🥛×2<br/>豆乳</div>
+      <div class="placeholder" style="text-align:center; font-size:10px; padding:6px;">⚡×1<br/>能量</div>
+      <div class="placeholder" style="text-align:center; font-size:10px; padding:6px;">🧊×3<br/>冰美</div>
+    </div>
+    <div style="margin-top: 12px; display: flex; gap: 8px; justify-content: center;">
+      <span class="mock-button" style="background:#4CAF50;color:white;padding:6px 12px;border-radius:4px;">🧹 一键整理</span>
+      <span class="mock-button" style="background:#2196F3;color:white;padding:6px 12px;border-radius:4px;">🔍 筛选</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>⚗️ 合成台 + 💱 交易 + 📖 图鉴</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+    <div style="border: 2px solid #9C27B0; border-radius: 12px; padding: 12px; background: #F3E5F5;">
+      <h4 style="margin:0 0 8px;font-size:14px;">⚗️ 合成台</h4>
+      <div style="font-size: 11px; color: #888; margin-bottom: 8px;">三合一升级 | 配方合成 | 阶段盲抽</div>
+      <div style="display: flex; gap: 4px; justify-content: center; margin: 8px 0;">
+        <div class="placeholder" style="width:32px;height:32px;font-size:16px;">🧃</div>
+        <span>+</span>
+        <div class="placeholder" style="width:32px;height:32px;font-size:16px;">🧃</div>
+        <span>+</span>
+        <div class="placeholder" style="width:32px;height:32px;font-size:16px;">🧃</div>
+        <span>=</span>
+        <div class="placeholder" style="width:32px;height:32px;font-size:16px;background:#FFD700;">✨</div>
+      </div>
+      <div class="mock-button" style="background:#9C27B0;color:white;padding:4px 8px;border-radius:4px;text-align:center;font-size:12px;">⚗️ 开始合成</div>
+    </div>
+    <div style="border: 2px solid #E91E63; border-radius: 12px; padding: 12px; background: #FCE4EC;">
+      <h4 style="margin:0 0 8px;font-size:14px;">💱 交易广场</h4>
+      <div style="font-size: 11px; color: #888; margin-bottom: 8px;">挂单交易 | 好友交换 | 悬赏求购</div>
+      <div style="font-size: 12px; margin: 4px 0;">☕ 冰美式 → 🪙 50</div>
+      <div style="font-size: 12px; margin: 4px 0;">🧋 拿铁 ← 🪙 80（求购）</div>
+      <div style="font-size: 12px; margin: 4px 0;">🧃 可乐 ⇄ 🥤 雪碧（交换）</div>
+    </div>
+  </div>
+  <div style="border: 2px solid #607D8B; border-radius: 12px; padding: 12px; margin-top: 12px; background: #ECEFF1;">
+    <h4 style="margin:0 0 8px;font-size:14px;">📖 收集图鉴</h4>
+    <div style="font-size: 12px; margin-bottom: 4px;">总进度：<strong>47 / 120</strong> 种（39%）</div>
+    <div style="background:#ddd;border-radius:4px;height:8px;overflow:hidden;">
+      <div style="background:#607D8B;width:39%;height:100%;"></div>
+    </div>
+    <div style="display: flex; gap: 4px; margin-top: 6px; font-size: 11px;">
+      <span>⭐ 30/50</span><span>⭐⭐ 12/35</span><span>⭐⭐⭐ 4/20</span><span>⭐⭐⭐⭐ 1/10</span><span>⭐⭐⭐⭐⭐ 0/5</span>
+    </div>
+  </div>
+</div>

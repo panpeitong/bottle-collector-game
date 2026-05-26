@@ -1,0 +1,55 @@
+<h2>核心数据模型</h2>
+<p class="subtitle">瓶子、贩卖机、玩家三大实体</p>
+
+<div class="section">
+  <h3>🧃 瓶子 (Bottle)</h3>
+  <table style="width:100%; font-size:13px; border-collapse:collapse;">
+    <tr style="background:#f5f5f5;"><td style="padding:6px;font-weight:bold;">字段</td><td style="padding:6px;font-weight:bold;">类型</td><td style="padding:6px;font-weight:bold;">说明</td></tr>
+    <tr><td style="padding:6px;">id</td><td style="padding:6px;">string</td><td style="padding:6px;">唯一标识，如 "cola_001"</td></tr>
+    <tr><td style="padding:6px;">name</td><td style="padding:6px;">string</td><td style="padding:6px;">瓶身名称</td></tr>
+    <tr><td style="padding:6px;">rarity</td><td style="padding:6px;">1-5</td><td style="padding:6px;">⭐普通 ⭐⭐稀有 ⭐⭐⭐珍贵 ⭐⭐⭐⭐史诗 ⭐⭐⭐⭐⭐传说</td></tr>
+    <tr><td style="padding:6px;">category</td><td style="padding:6px;">enum</td><td style="padding:6px;">coffee / soda / tea / sugarfree / juice / energy</td></tr>
+    <tr><td style="padding:6px;">sprite</td><td style="padding:6px;">string</td><td style="padding:6px;">像素素材路径</td></tr>
+    <tr><td style="padding:6px;">synthesizable</td><td style="padding:6px;">boolean</td><td style="padding:6px;">是否可合成获得</td></tr>
+    <tr><td style="padding:6px;">recipe</td><td style="padding:6px;">{a, b, c}[]</td><td style="padding:6px;">配方合成表（稀有品专用）</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>🏪 贩卖机 (VendingMachine)</h3>
+  <table style="width:100%; font-size:13px; border-collapse:collapse;">
+    <tr style="background:#f5f5f5;"><td style="padding:6px;font-weight:bold;">字段</td><td style="padding:6px;font-weight:bold;">类型</td><td style="padding:6px;font-weight:bold;">说明</td></tr>
+    <tr><td style="padding:6px;">id</td><td style="padding:6px;">string</td><td style="padding:6px;">如 "vm_coffee"</td></tr>
+    <tr><td style="padding:6px;">theme</td><td style="padding:6px;">enum</td><td style="padding:6px;">主题分类</td></tr>
+    <tr><td style="padding:6px;">unlockType</td><td style="padding:6px;">coin/synth/task</td><td style="padding:6px;">解锁方式</td></tr>
+    <tr><td style="padding:6px;">unlockCost</td><td style="padding:6px;">number</td><td style="padding:6px;">金币价格（coin类）</td></tr>
+    <tr><td style="padding:6px;">pullCost</td><td style="padding:6px;">number</td><td style="padding:6px;">单抽金币消耗</td></tr>
+    <tr><td style="padding:6px;">pool</td><td style="padding:6px;">PoolConfig</td><td style="padding:6px;">抽取概率配置</td></tr>
+    <tr><td style="padding:6px;">sprite</td><td style="padding:6px;">string</td><td style="padding:6px;">贩卖机像素素材</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>🎒 玩家数据 (PlayerData)</h3>
+  <table style="width:100%; font-size:13px; border-collapse:collapse;">
+    <tr style="background:#f5f5f5;"><td style="padding:6px;font-weight:bold;">字段</td><td style="padding:6px;font-weight:bold;">类型</td><td style="padding:6px;font-weight:bold;">说明</td></tr>
+    <tr><td style="padding:6px;">coins</td><td style="padding:6px;">number</td><td style="padding:6px;">金币余额</td></tr>
+    <tr><td style="padding:6px;">bottles</td><td style="padding:6px;">Map&lt;id, count&gt;</td><td style="padding:6px;">持有瓶子及数量（重复可叠加）</td></tr>
+    <tr><td style="padding:6px;">machines</td><td style="padding:6px;">string[]</td><td style="padding:6px;">已解锁贩卖机ID列表</td></tr>
+    <tr><td style="padding:6px;">collectionProgress</td><td style="padding:6px;">{total, byRarity}</td><td style="padding:6px;">图鉴收集进度</td></tr>
+    <tr><td style="padding:6px;">stageBlindBox</td><td style="padding:6px;">{collected, threshold}</td><td style="padding:6px;">阶段盲抽进度（收集数达标触发）</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>🎲 概率配置示例</h3>
+  <table style="width:100%; font-size:13px; border-collapse:collapse;">
+    <tr style="background:#f5f5f5;"><td style="padding:6px;font-weight:bold;">稀有度</td><td style="padding:6px;font-weight:bold;">基础概率</td><td style="padding:6px;font-weight:bold;">保底机制</td></tr>
+    <tr><td style="padding:6px;">⭐⭐⭐⭐⭐ 传说</td><td style="padding:6px;">0.5%</td><td style="padding:6px;">200抽保底</td></tr>
+    <tr><td style="padding:6px;">⭐⭐⭐⭐ 史诗</td><td style="padding:6px;">3%</td><td style="padding:6px;">50抽保底</td></tr>
+    <tr><td style="padding:6px;">⭐⭐⭐ 珍贵</td><td style="padding:6px;">12%</td><td style="padding:6px;">15抽保底</td></tr>
+    <tr><td style="padding:6px;">⭐⭐ 稀有</td><td style="padding:6px;">30%</td><td style="padding:6px;">-</td></tr>
+    <tr><td style="padding:6px;">⭐ 普通</td><td style="padding:6px;">54.5%</td><td style="padding:6px;">-</td></tr>
+  </table>
+  <small style="color:#888;">再来一瓶概率：8%（独立事件）| 阶段盲抽：每收集30种触发1次（仅出⭐⭐⭐+）</small>
+</div>

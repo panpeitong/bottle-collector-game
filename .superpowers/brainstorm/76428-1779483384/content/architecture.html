@@ -1,0 +1,66 @@
+<h2>游戏整体架构</h2>
+<p class="subtitle">七大系统 + 本地验证原型可行性</p>
+
+<div class="section">
+  <h3>🎮 系统架构总览</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+    <div class="placeholder" style="background: #FFE0B2; color: #E65100;">
+      <strong>🏪 贩卖机系统</strong><br/>
+      <small>主题分类 · 刷新机制 · 概率控制 · 抽卡动画</small>
+    </div>
+    <div class="placeholder" style="background: #C8E6C9; color: #2E7D32;">
+      <strong>📦 收集系统</strong><br/>
+      <small>图鉴 · 稀有度 · 数量 · 重复处理</small>
+    </div>
+    <div class="placeholder" style="background: #BBDEFB; color: #1565C0;">
+      <strong>⚗️ 合成系统</strong><br/>
+      <small>三合一 · 配方合成 · 再来一瓶 · 阶段盲抽</small>
+    </div>
+    <div class="placeholder" style="background: #F8BBD0; color: #C2185B;">
+      <strong>💱 社交交易</strong><br/>
+      <small>好友交换 · 交易市场 · 悬赏系统</small>
+    </div>
+    <div class="placeholder" style="background: #D1C4E9; color: #512DA8;">
+      <strong>🪙 金币经济</strong><br/>
+      <small>获取途径 · 消费出口 · 平衡参数</small>
+    </div>
+    <div class="placeholder" style="background: #FFECB3; color: #F57F17;">
+      <strong>🎯 任务成就</strong><br/>
+      <small>日常任务 · 收集成就 · 稀有奖励</small>
+    </div>
+    <div class="placeholder" style="background: #B2EBF2; color: #006064;">
+      <strong>☁️ 云服务层</strong><br/>
+      <small>数据同步 · 防作弊 · 排行榜 · 交易验证</small>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🏗️ 技术栈</h3>
+  <table style="width:100%; font-size:13px;">
+    <tr><td style="font-weight:bold;padding:4px 8px;">框架</td><td>微信小程序原生 + TypeScript</td></tr>
+    <tr><td style="font-weight:bold;padding:4px 8px;">渲染</td><td>Canvas 2D（像素风高效绘制）</td></tr>
+    <tr><td style="font-weight:bold;padding:4px 8px;">后端</td><td>微信云开发 CloudBase（数据库+云函数+存储）</td></tr>
+    <tr><td style="font-weight:bold;padding:4px 8px;">原型</td><td>先做本地版纯前端可玩 Demo，核心逻辑抽离为独立的 Service 层，后续只需切换 DataAdapter 即可上云</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>🔄 原型到云端的演进路径</h3>
+  <div style="display:flex; gap:8px; align-items:center; font-size:13px; margin-top:8px;">
+    <div class="placeholder" style="flex:1; background:#4CAF50; color:white; text-align:center;">
+      <strong>V0 本地原型</strong><br/>
+      全本地数据<br/>核心玩法可玩<br/>验证趣味性
+    </div>
+    <span style="font-size:24px;">→</span>
+    <div class="placeholder" style="flex:1; background:#2196F3; color:white; text-align:center;">
+      <strong>V1 云端上线</strong><br/>
+      切换DataAdapter<br/>接入云数据库<br/>微信登录+分享
+    </div>
+    <span style="font-size:24px;">→</span>
+    <div class="placeholder" style="flex:1; background:#9C27B0; color:white; text-align:center;">
+      <strong>V2 社交完整</strong><br/>
+      交易市场<br/>排行榜<br/>活动系统
+    </div>
+  </div>
+</div>

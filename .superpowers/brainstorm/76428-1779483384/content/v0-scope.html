@@ -1,0 +1,84 @@
+<h2>V0 原型范围</h2>
+<p class="subtitle">本地可玩 · 核心循环 · 验证趣味性</p>
+
+<div class="section">
+  <h3>✅ V0 包含的功能</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size:13px;">
+    <div class="placeholder" style="background:#C8E6C9;color:#2E7D32;">
+      ✅ 像素风贩卖机主页<br/><small>3台贩卖机：汽水 / 茶饮 / 混合</small>
+    </div>
+    <div class="placeholder" style="background:#C8E6C9;color:#2E7D32;">
+      ✅ 抽卡动画+概率<br/><small>单抽/十连，出货光效</small>
+    </div>
+    <div class="placeholder" style="background:#C8E6C9;color:#2E7D32;">
+      ✅ 背包/瓶子画廊<br/><small>展示持有瓶子，拖拽排列</small>
+    </div>
+    <div class="placeholder" style="background:#C8E6C9;color:#2E7D32;">
+      ✅ 三合一合成<br/><small>选3个同稀有度→合成升级</small>
+    </div>
+    <div class="placeholder" style="background:#C8E6C9;color:#2E7D32;">
+      ✅ 图鉴收集<br/><small>展示所有瓶子，灰/亮状态</small>
+    </div>
+    <div class="placeholder" style="background:#C8E6C9;color:#2E7D32;">
+      ✅ 金币系统+再来一瓶<br/><small>完整经济循环</small>
+    </div>
+    <div class="placeholder" style="background:#C8E6C9;color:#2E7D32;">
+      ✅ 阶段盲抽<br/><small>收集里程碑触发</small>
+    </div>
+    <div class="placeholder" style="background:#C8E6C9;color:#2E7D32;">
+      ✅ 本地数据持久化<br/><small>DataAdapter抽象层</small>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>❌ V0 不包含（V1/V2再加）</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size:13px;">
+    <div class="placeholder" style="background:#FFCDD2;color:#C62828;">❌ 微信登录</div>
+    <div class="placeholder" style="background:#FFCDD2;color:#C62828;">❌ 云端同步</div>
+    <div class="placeholder" style="background:#FFCDD2;color:#C62828;">❌ 交易市场</div>
+    <div class="placeholder" style="background:#FFCDD2;color:#C62828;">❌ 好友交换</div>
+    <div class="placeholder" style="background:#FFCDD2;color:#C62828;">❌ 排行榜</div>
+    <div class="placeholder" style="background:#FFCDD2;color:#C62828;">❌ 配方合成</div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🎨 V0 美术素材清单</h3>
+  <table style="width:100%; font-size:12px; border-collapse:collapse;">
+    <tr style="background:#f5f5f5;"><td style="padding:6px;font-weight:bold;">类型</td><td style="padding:6px;font-weight:bold;">数量</td><td style="padding:6px;font-weight:bold;">规格</td></tr>
+    <tr><td style="padding:6px;">瓶子像素画</td><td style="padding:6px;">~30种（覆盖3个贩卖机奖池）</td><td style="padding:6px;">64×64 px</td></tr>
+    <tr><td style="padding:6px;">贩卖机像素画</td><td style="padding:6px;">3台</td><td style="padding:6px;">128×192 px</td></tr>
+    <tr><td style="padding:6px;">UI元素</td><td style="padding:6px;">按钮/边框/图标/粒子</td><td style="padding:6px;">16~32 px</td></tr>
+    <tr><td style="padding:6px;">稀有度光效</td><td style="padding:6px;">5帧抽卡动画</td><td style="padding:6px;">64×64 px</td></tr>
+    <tr><td style="padding:6px;">背景/装饰</td><td style="padding:6px;">3张贩卖机场景背景</td><td style="padding:6px;">全屏</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>🚀 项目结构</h3>
+  <pre style="font-size:11px;background:#263238;color:#AEEA00;padding:12px;border-radius:8px;overflow-x:auto;">
+miniprog-game/
+├── miniprogram/            # 小程序前端
+│   ├── pages/              # 页面
+│   │   ├── machine/        # 贩卖机主页
+│   │   ├── backpack/       # 我的瓶子
+│   │   ├── synth/          # 合成台
+│   │   └── album/          # 图鉴
+│   ├── services/           # 核心逻辑（DataAdapter抽象）
+│   │   ├── bottleService.ts
+│   │   ├── machineService.ts  
+│   │   ├── synthService.ts
+│   │   └── economyService.ts
+│   ├── data/               # 配置数据
+│   │   ├── bottles.json    # 瓶子数据库
+│   │   ├── machines.json   # 贩卖机配置
+│   │   └── recipes.json    # 合成配方
+│   ├── assets/             # 像素美术素材
+│   │   ├── sprites/
+│   │   └── ui/
+│   └── utils/              # 工具函数
+├── cloudfunctions/         # 云函数（V1启用）
+└── project.config.json
+  </pre>
+</div>
