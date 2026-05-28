@@ -1,0 +1,3 @@
+[     842ms] [LOG] 🎮 GM面板: 右下角按钮 | coffee/limited/冷却/幸运/保底券 @ http://localhost:8080/js/gm.js:148
+[    1263ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nVivNm4I81.woff2:0
+[    1272ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8080/favicon.ico:0

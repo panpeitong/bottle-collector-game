@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贩卖机UI V2 — 红黑经典 vs 霓虹赛博</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #0a0a1a;
+  font-family: 'Press Start 2P', cursive;
+  color: #eee;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 14px;
+  color: #f0c040;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 6px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.card {
+  background: #111;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 6px;
+  color: #888;
+  margin-bottom: 16px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.phone-frame {
+  width: 320px;
+  height: 640px;
+  border: 6px solid #222;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0a0a1a;
+  position: relative;
+}
+
+.phone-frame::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  padding: 16px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* ===== Common elements ===== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 6px;
+}
+
+.sign-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 6px;
+  padding: 4px 8px;
+  background: transparent;
+  color: #aaa;
+  border: 2px solid #555;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.coin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 8px;
+}
+
+.lucky-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 6px;
+  font-size: 5px;
+  color: #777;
+}
+
+.lucky-track {
+  flex: 1;
+  max-width: 80px;
+  height: 6px;
+  background: #222;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.lucky-fill {
+  height: 100%;
+  width: 60%;
+  background: #4CAF50;
+  border-radius: 3px;
+}
+
+.machine-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 8px;
+  margin-bottom: 8px;
+}
+
+.machine-name button {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 11px;
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+/* ===== Machine Frame ===== */
+.machine-frame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.machine-body {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+}
+
+/* ===== Glass Window — wider now ===== */
+.glass-window {
+  flex: 1;
+  background: #060610;
+  border-radius: 6px;
+  border: 3px solid #333;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-reflection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.glass-shelf-lines {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px;
+  gap: calc((100% - 20px) / 4);
+  justify-content: space-between;
+}
+
+.glass-shelf-lines::before,
+.glass-shelf-lines::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: rgba(255,255,255,0.04);
+  margin: 0 2px;
+}
+
+.shelf-line {
+  height: 1px;
+  background: rgba(255,255,255,0.04);
+  margin: 0 2px;
+}
+
+.bottle-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 5px;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 0;
+}
+
+.bottle-cell {
+  background: #0a0a14;
+  border: 2px solid #1a1a2e;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  position: relative;
+}
+
+/* Rarity border colors */
+.b-r-legendary {
+  border-color: #FF9800 !important;
+  box-shadow: 0 0 6px rgba(255,152,0,0.5), inset 0 0 6px rgba(255,152,0,0.1);
+}
+.b-r-epic {
+  border-color: #9C27B0 !important;
+  box-shadow: 0 0 4px rgba(156,39,176,0.3);
+}
+.b-r-rare {
+  border-color: #2196F3 !important;
+}
+.b-r-precious {
+  border-color: #4CAF50 !important;
+}
+.b-r-common {
+  border-color: #666 !important;
+}
+
+.rarity-dot {
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.dot-legendary { background: #FF9800; box-shadow: 0 0 3px #FF9800; }
+.dot-epic { background: #9C27B0; }
+.dot-rare { background: #2196F3; }
+.dot-precious { background: #4CAF50; }
+.dot-common { background: #888; }
+
+/* ===== Right Panel — narrower ===== */
+.right-panel {
+  width: 58px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-area {
+  padding: 6px 3px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 5px;
+  line-height: 1.5;
+}
+
+.logo-icon {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 1px;
+}
+
+.logo-name {
+  font-size: 6px;
+  line-height: 1.3;
+}
+
+.buttons-area {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pull-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 6px;
+  padding: 10px 4px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.4;
+  transition: all 0.15s;
+}
+
+.pull-btn .cost {
+  font-size: 4px;
+  opacity: 0.7;
+  display: block;
+  margin-top: 1px;
+}
+
+.pull-btn .arrows {
+  font-size: 4px;
+  display: block;
+  margin-top: 2px;
+}
+
+/* ===== Outlet ===== */
+.outlet {
+  margin: 6px 10px;
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 5px;
+  color: #555;
+  position: relative;
+}
+
+.outlet-slot {
+  display: inline-block;
+  width: 50px;
+  height: 10px;
+  margin-top: 4px;
+  border-radius: 4px;
+}
+
+/* ===== Unlock ===== */
+.unlock-section {
+  margin-top: 5px;
+  font-size: 5px;
+  color: #555;
+  text-align: center;
+}
+
+.unlock-section span {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px dashed #444;
+  border-radius: 4px;
+}
+
+/* ===== Tab bar ===== */
+.tab-bar {
+  display: flex;
+  margin-top: 6px;
+  font-size: 4px;
+  gap: 2px;
+  justify-content: center;
+}
+
+.tab-bar span {
+  padding: 3px 5px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 3px;
+  color: #555;
+}
+
+.tab-bar span.active {
+  color: #f0c040;
+  border-color: #f0c040;
+  background: #1a1a0a;
+}
+
+/* ===== Rarity legend ===== */
+.rarity-legend {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 5px;
+  color: #777;
+  flex-wrap: wrap;
+}
+
+.rarity-legend span {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* ============ STYLE 1: 红黑经典 ============ */
+.style1 .machine-frame {
+  background: linear-gradient(180deg, #a02020 0%, #6b1414 50%, #8b1a1a 100%);
+  border: 3px solid #b22222;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 4px 24px rgba(178,34,34,0.35);
+}
+.style1 .glass-window {
+  border-color: #662222;
+  background: #030308;
+}
+.style1 .glass-reflection {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+}
+.style1 .logo-area {
+  background: linear-gradient(180deg, #1a1a0a 0%, #0a0a00 100%);
+  border: 2px solid #f0c040;
+  color: #f0c040;
+}
+.style1 .pull-btn {
+  background: #e94560;
+  color: #fff;
+  border: 2px solid #ff6b6b;
+}
+.style1 .pull-btn:nth-child(2) {
+  background: #a31530;
+  border-color: #c62828;
+}
+.style1 .outlet {
+  background: #1a1a2e;
+  border: 3px inset #554444;
+  color: #666;
+}
+.style1 .outlet-slot {
+  background: #333;
+  border: 2px inset #555;
+}
+.style1 .machine-name { color: #f0c040; }
+.style1 .coin-badge { color: #f0c040; }
+.style1 .sign-btn { border-color: #8b4513; color: #d4a574; }
+
+/* ============ STYLE 2: 霓虹赛博 ============ */
+.style2 .machine-frame {
+  background: linear-gradient(180deg, #0d0818 0%, #080510 50%, #0d0818 100%);
+  border: 3px solid #2a1a3a;
+  box-shadow: inset 0 0 30px rgba(100,0,200,0.12), 0 0 30px rgba(0,200,255,0.12), 0 4px 24px rgba(0,0,0,0.5);
+}
+.style2 .glass-window {
+  border-color: rgba(0,255,255,0.15);
+  background: #020208;
+  box-shadow: inset 0 0 15px rgba(0,255,255,0.04);
+}
+.style2 .glass-reflection {
+  background: linear-gradient(90deg, rgba(0,255,255,0.03) 0%, rgba(255,0,255,0.02) 50%, transparent 100%);
+}
+.style2 .logo-area {
+  background: transparent;
+  border: 2px solid #bc13fe;
+  color: #bc13fe;
+  text-shadow: 0 0 8px #bc13fe, 0 0 20px #bc13fe44;
+  box-shadow: 0 0 12px rgba(188,19,254,0.15), inset 0 0 12px rgba(188,19,254,0.04);
+}
+.style2 .pull-btn {
+  background: #12081a;
+  border: 2px solid #ff2d95;
+  color: #ff2d95;
+  text-shadow: 0 0 6px #ff2d95;
+  box-shadow: 0 0 8px rgba(255,45,149,0.25);
+}
+.style2 .pull-btn:nth-child(2) {
+  border-color: #00f0ff;
+  color: #00f0ff;
+  text-shadow: 0 0 6px #00f0ff;
+  box-shadow: 0 0 8px rgba(0,240,255,0.25);
+}
+.style2 .outlet {
+  background: #060610;
+  border: 2px solid rgba(0,255,255,0.2);
+  color: #0aa;
+  box-shadow: inset 0 0 8px rgba(0,255,255,0.04);
+}
+.style2 .outlet-slot {
+  background: rgba(0,255,255,0.1);
+  border: 1px solid rgba(0,255,255,0.3);
+}
+.style2 .machine-name { color: #bc13fe; text-shadow: 0 0 8px #bc13fe66; }
+.style2 .coin-badge { color: #0ff; text-shadow: 0 0 6px rgba(0,255,255,0.5); }
+.style2 .sign-btn { border-color: #3a2a5a; color: #9a7aca; }
+
+/* ===== Rarity legend in each style ===== */
+.style1 .rarity-legend span { color: #aaa; }
+.style2 .rarity-legend span { color: #777; }
+
+@media (max-width: 750px) {
+  .grid { grid-template-columns: 1fr; }
+  .phone-frame { width: 280px; height: 560px; }
+  .right-panel { width: 50px; }
+  .bottle-cell { font-size: 13px; }
+  .logo-icon { font-size: 16px; }
+  .pull-btn { font-size: 5px; padding: 8px 3px; }
+}
+</style>
+</head>
+<body>
+
+<h1>🎰 贩卖机UI · V2 优化方案</h1>
+<p class="subtitle">右面板宽度减半 → 橱窗更大 | 稀有度分布：1传说(金) 4史诗(紫) 5稀有(蓝) 5珍贵(绿) 5普通(灰)</p>
+
+<div class="grid">
+
+  <!-- ==================== STYLE 1: 红黑经典 ==================== -->
+  <div class="card">
+    <div class="card-title" style="color:#e94560;">🔴 红黑经典</div>
+    <div class="card-desc">深红机身 · 金色装饰 · 经典贩卖机质感</div>
+    <div class="phone-frame style1">
+      <div class="phone-screen">
+        <div class="top-bar">
+          <button class="sign-btn">📅 签到</button>
+          <span class="coin-badge">🪙 250</span>
+        </div>
+        <div class="lucky-bar">
+          <span>🍀</span>
+          <div class="lucky-track"><div class="lucky-fill"></div></div>
+          <span>60%</span>
+        </div>
+        <div class="machine-name">
+          <button>◀</button>
+          <span>🥤 汽水贩卖机</span>
+          <button>▶</button>
+        </div>
+        <div class="machine-frame">
+          <div class="machine-body">
+            <div class="glass-window">
+              <div class="glass-reflection"></div>
+              <div class="bottle-grid">
+                <!-- Row 1: 1 legendary + 1 epic + 1 rare + 1 precious + 1 common -->
+                <div class="bottle-cell b-r-legendary">🧃<span class="rarity-dot dot-legendary"></span></div>
+                <div class="bottle-cell b-r-epic">🥤<span class="rarity-dot dot-epic"></span></div>
+                <div class="bottle-cell b-r-rare">🧋<span class="rarity-dot dot-rare"></span></div>
+                <div class="bottle-cell b-r-precious">🧊<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🍵<span class="rarity-dot dot-common"></span></div>
+                <!-- Row 2: 1 epic + 1 rare + 1 precious + 1 common + 1 rare -->
+                <div class="bottle-cell b-r-epic">☕<span class="rarity-dot dot-epic"></span></div>
+                <div class="bottle-cell b-r-rare">🥛<span class="rarity-dot dot-rare"></span></div>
+                <div class="bottle-cell b-r-precious">🧋<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🧃<span class="rarity-dot dot-common"></span></div>
+                <div class="bottle-cell b-r-rare">☕<span class="rarity-dot dot-rare"></span></div>
+                <!-- Row 3: 1 epic + 1 rare + 1 precious + 1 common + 1 epic -->
+                <div class="bottle-cell b-r-epic">🥤<span class="rarity-dot dot-epic"></span></div>
+                <div class="bottle-cell b-r-rare">🍵<span class="rarity-dot dot-rare"></span></div>
+                <div class="bottle-cell b-r-precious">🥛<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🧊<span class="rarity-dot dot-common"></span></div>
+                <div class="bottle-cell b-r-epic">🧃<span class="rarity-dot dot-epic"></span></div>
+                <!-- Row 4: 1 rare + 1 precious + 1 common + 1 precious + 1 common -->
+                <div class="bottle-cell b-r-rare">🥤<span class="rarity-dot dot-rare"></span></div>
+                <div class="bottle-cell b-r-precious">🍵<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🧋<span class="rarity-dot dot-common"></span></div>
+                <div class="bottle-cell b-r-precious">☕<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🥛<span class="rarity-dot dot-common"></span></div>
+              </div>
+            </div>
+            <div class="right-panel">
+              <div class="logo-area">
+                <span class="logo-icon">🥤</span>
+                <span class="logo-name">汽水<br>贩卖机</span>
+              </div>
+              <div class="buttons-area">
+                <button class="pull-btn">抽一瓶<span class="cost">10🪙</span></button>
+                <button class="pull-btn">十连抽<span class="cost">90🪙</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="outlet">
+            ▼ 取物口
+            <div class="outlet-slot"></div>
+          </div>
+        </div>
+        <div class="rarity-legend">
+          <span><span class="legend-dot" style="background:#FF9800;"></span>传说</span>
+          <span><span class="legend-dot" style="background:#9C27B0;"></span>史诗</span>
+          <span><span class="legend-dot" style="background:#2196F3;"></span>稀有</span>
+          <span><span class="legend-dot" style="background:#4CAF50;"></span>珍贵</span>
+          <span><span class="legend-dot" style="background:#888;"></span>普通</span>
+        </div>
+        <div class="unlock-section"><span>🔽 解锁新贩卖机</span></div>
+        <div class="tab-bar">
+          <span class="active">🏪 贩卖机</span><span>🎒 背包</span><span>⚗️ 合成</span><span>📖 图鉴</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== STYLE 2: 霓虹赛博 ==================== -->
+  <div class="card">
+    <div class="card-title" style="color:#bc13fe;">💜 霓虹赛博</div>
+    <div class="card-desc">暗黑机身 · 霓虹灯条 · 赛博朋克质感</div>
+    <div class="phone-frame style2">
+      <div class="phone-screen">
+        <div class="top-bar">
+          <button class="sign-btn">📅 签到</button>
+          <span class="coin-badge">🪙 250</span>
+        </div>
+        <div class="lucky-bar">
+          <span>🍀</span>
+          <div class="lucky-track"><div class="lucky-fill"></div></div>
+          <span>60%</span>
+        </div>
+        <div class="machine-name">
+          <button>◀</button>
+          <span>🥤 汽水贩卖机</span>
+          <button>▶</button>
+        </div>
+        <div class="machine-frame">
+          <div class="machine-body">
+            <div class="glass-window">
+              <div class="glass-reflection"></div>
+              <div class="bottle-grid">
+                <!-- Row 1 -->
+                <div class="bottle-cell b-r-legendary">🧃<span class="rarity-dot dot-legendary"></span></div>
+                <div class="bottle-cell b-r-epic">🥤<span class="rarity-dot dot-epic"></span></div>
+                <div class="bottle-cell b-r-rare">🧋<span class="rarity-dot dot-rare"></span></div>
+                <div class="bottle-cell b-r-precious">🧊<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🍵<span class="rarity-dot dot-common"></span></div>
+                <!-- Row 2 -->
+                <div class="bottle-cell b-r-epic">☕<span class="rarity-dot dot-epic"></span></div>
+                <div class="bottle-cell b-r-rare">🥛<span class="rarity-dot dot-rare"></span></div>
+                <div class="bottle-cell b-r-precious">🧋<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🧃<span class="rarity-dot dot-common"></span></div>
+                <div class="bottle-cell b-r-rare">☕<span class="rarity-dot dot-rare"></span></div>
+                <!-- Row 3 -->
+                <div class="bottle-cell b-r-epic">🥤<span class="rarity-dot dot-epic"></span></div>
+                <div class="bottle-cell b-r-rare">🍵<span class="rarity-dot dot-rare"></span></div>
+                <div class="bottle-cell b-r-precious">🥛<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🧊<span class="rarity-dot dot-common"></span></div>
+                <div class="bottle-cell b-r-epic">🧃<span class="rarity-dot dot-epic"></span></div>
+                <!-- Row 4 -->
+                <div class="bottle-cell b-r-rare">🥤<span class="rarity-dot dot-rare"></span></div>
+                <div class="bottle-cell b-r-precious">🍵<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🧋<span class="rarity-dot dot-common"></span></div>
+                <div class="bottle-cell b-r-precious">☕<span class="rarity-dot dot-precious"></span></div>
+                <div class="bottle-cell b-r-common">🥛<span class="rarity-dot dot-common"></span></div>
+              </div>
+            </div>
+            <div class="right-panel">
+              <div class="logo-area">
+                <span class="logo-icon">🥤</span>
+                <span class="logo-name">汽水<br>贩卖机</span>
+              </div>
+              <div class="buttons-area">
+                <button class="pull-btn">抽一瓶<span class="cost">10🪙</span></button>
+                <button class="pull-btn">十连抽<span class="cost">90🪙</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="outlet">
+            ▼ 取物口
+            <div class="outlet-slot"></div>
+          </div>
+        </div>
+        <div class="rarity-legend">
+          <span><span class="legend-dot" style="background:#FF9800;"></span>传说</span>
+          <span><span class="legend-dot" style="background:#9C27B0;"></span>史诗</span>
+          <span><span class="legend-dot" style="background:#2196F3;"></span>稀有</span>
+          <span><span class="legend-dot" style="background:#4CAF50;"></span>珍贵</span>
+          <span><span class="legend-dot" style="background:#888;"></span>普通</span>
+        </div>
+        <div class="unlock-section"><span>🔽 解锁新贩卖机</span></div>
+        <div class="tab-bar">
+          <span class="active">🏪 贩卖机</span><span>🎒 背包</span><span>⚗️ 合成</span><span>📖 图鉴</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

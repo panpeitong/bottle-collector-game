@@ -2,7 +2,11 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a1a">
+<meta name="color-scheme" content="dark">
 <title>饮料瓶收集 - 贩卖机大作战</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -10,10 +14,22 @@
 <div id="app">
   <div id="page-container"></div>
   <nav id="tab-bar">
-    <div class="tab active" data-page="machine">🏪 贩卖机</div>
-    <div class="tab" data-page="backpack">🎒 背包</div>
-    <div class="tab" data-page="synth">⚗️ 合成</div>
-    <div class="tab" data-page="album">📖 图鉴</div>
+    <div class="tab active" data-page="machine">
+      <span class="tab-icon">🏪</span>
+      <span class="tab-label">贩卖机</span>
+    </div>
+    <div class="tab" data-page="backpack">
+      <span class="tab-icon">🎒</span>
+      <span class="tab-label">背包</span>
+    </div>
+    <div class="tab" data-page="synth">
+      <span class="tab-icon">⚗️</span>
+      <span class="tab-label">合成</span>
+    </div>
+    <div class="tab" data-page="album">
+      <span class="tab-icon">📖</span>
+      <span class="tab-label">图鉴</span>
+    </div>
   </nav>
 </div>
 <script type="module" src="js/app.js"></script>

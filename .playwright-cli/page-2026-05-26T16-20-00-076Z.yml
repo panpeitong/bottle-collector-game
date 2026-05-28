@@ -1,0 +1,33 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - button "📅 签到" [ref=e6] [cursor=pointer]
+        - generic [ref=e7]: 🪙200
+      - generic [ref=e8]:
+        - generic [ref=e9]: 🍀 幸运
+        - generic [ref=e11]: 0%
+      - generic [ref=e12]:
+        - button "◀" [disabled] [ref=e13]
+        - generic [ref=e14]: 🥤 汽水贩卖机
+        - button "▶" [disabled] [ref=e15]
+      - generic [ref=e16]:
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]: 🥤
+            - text: 汽水贩卖
+          - generic [ref=e23]:
+            - button "抽一瓶 10🪙" [ref=e24] [cursor=pointer]:
+              - text: 抽一瓶
+              - generic [ref=e25]: 10🪙
+            - button "十连抽 90🪙" [ref=e26] [cursor=pointer]:
+              - text: 十连抽
+              - generic [ref=e27]: 90🪙
+        - generic [ref=e28]: ▼ 取物口
+      - button "🔽 解锁新贩卖机" [ref=e31] [cursor=pointer]
+    - navigation [ref=e32]:
+      - generic [ref=e33] [cursor=pointer]: 🏪 贩卖机
+      - generic [ref=e34] [cursor=pointer]: 🎒 背包
+      - generic [ref=e35] [cursor=pointer]: ⚗️ 合成
+      - generic [ref=e36] [cursor=pointer]: 📖 图鉴
+  - button "🎮" [ref=e37] [cursor=pointer]

@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>饮料瓶收集游戏 — 界面设计原型</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #0a0a1a;
+  font-family: 'Press Start 2P', cursive;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* ===== Phone Frame ===== */
+.phone {
+  width: 375px;
+  height: 740px;
+  background: #16213e;
+  border: 3px solid #1a1a2e;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 40px rgba(233,69,96,0.15), 0 0 80px rgba(15,52,96,0.3);
+  position: relative;
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+/* ===== Status Bar ===== */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 16px 8px;
+  font-size: 6px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+/* ===== Page Container ===== */
+#page-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 10px;
+  scroll-behavior: smooth;
+}
+
+#page-container::-webkit-scrollbar { width: 3px; }
+#page-container::-webkit-scrollbar-thumb { background: #e94560; border-radius: 3px; }
+
+/* ===== Pages ===== */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ===== Top Bar ===== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 2px;
+}
+
+.sign-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 6px;
+  padding: 4px 10px;
+  background: transparent;
+  color: #aaa;
+  border: 2px solid #555;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.sign-btn:hover { color: #f0c040; border-color: #f0c040; }
+
+.coin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #1a1a2e;
+  padding: 4px 10px;
+  border: 2px solid #f0c040;
+  border-radius: 4px;
+  font-size: 8px;
+  color: #f0c040;
+}
+
+.coin-badge .coin-icon { font-size: 12px; }
+
+/* ===== Lucky Bar ===== */
+.lucky-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 6px;
+  font-size: 5px;
+  color: #777;
+  padding: 0 4px;
+}
+.lucky-label { flex-shrink: 0; }
+.lucky-track {
+  flex: 1;
+  max-width: 100px;
+  height: 6px;
+  background: #222;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.lucky-fill {
+  height: 100%;
+  width: 65%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 3px;
+  transition: width 0.5s;
+}
+.lucky-count { 
+  font-size: 6px; 
+  color: #8BC34A;
+  flex-shrink: 0;
+}
+
+/* ===== Machine Switcher ===== */
+.machine-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.machine-nav {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  padding: 4px 6px;
+  transition: color 0.15s;
+}
+.machine-nav:hover { color: #e94560; }
+
+.machine-title {
+  font-size: 7px;
+  color: #e94560;
+  text-align: center;
+  min-width: 120px;
+}
+
+/* ===== Machine Body ===== */
+.machine-frame {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #333;
+  margin-bottom: 8px;
+}
+
+.machine-top {
+  background: #e94560;
+  padding: 6px 12px;
+  font-size: 7px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.machine-body-inner {
+  background: #0f3460;
+  padding: 10px;
+}
+
+/* ===== Glass Window ===== */
+.glass-window {
+  background: #060610;
+  border-radius: 6px;
+  border: 3px solid #222;
+  padding: 10px 8px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-window::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.bottle-slot {
+  background: #0a0a14;
+  border: 2px solid #1c1c32;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  aspect-ratio: 1;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.bottle-slot.filled { border-color: #4CAF50; background: #0a0a20; }
+.bottle-slot.rare { border-color: #2196F3; }
+.bottle-slot.epic { border-color: #9C27B0; box-shadow: 0 0 6px rgba(156,39,176,0.4); }
+.bottle-slot.legendary { border-color: #FF9800; box-shadow: 0 0 8px rgba(255,152,0,0.6), inset 0 0 8px rgba(255,152,0,0.1); }
+.bottle-slot.limited { border-color: #FFD700; box-shadow: 0 0 10px rgba(255,215,0,0.5), 0 0 20px rgba(255,215,0,0.15); }
+
+.bottle-emoji { position: relative; z-index: 1; }
+.rarity-dot {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  z-index: 2;
+}
+.dot-common { background: #888; }
+.dot-rare { background: #2196F3; }
+.dot-precious { background: #4CAF50; }
+.dot-epic { background: #9C27B0; }
+.dot-legendary { background: #FF9800; box-shadow: 0 0 4px #FF9800; }
+
+/* ===== Pull Buttons ===== */
+.pull-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.pull-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 7px;
+  padding: 10px;
+  border: 2px solid #e94560;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.pull-btn.single {
+  background: #0f3460;
+  color: #e94560;
+}
+.pull-btn.single:hover { background: #e94560; color: #fff; }
+
+.pull-btn.ten {
+  background: #e94560;
+  color: #fff;
+}
+.pull-btn.ten:hover { background: #c0392b; }
+
+.pull-btn .cost {
+  font-size: 5px;
+  color: #f0c040;
+  display: block;
+  margin-top: 3px;
+}
+
+/* ===== Pull Result ===== */
+.pull-result {
+  background: #0f3460;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 8px;
+  margin-top: 6px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 7px;
+  flex-wrap: wrap;
+}
+
+.pull-result .result-bottle {
+  font-size: 28px;
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== Backpack / Bottle Grid ===== */
+.section-title {
+  font-size: 7px;
+  color: #e94560;
+  margin: 10px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #222;
+}
+
+.bottle-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.bottle-card {
+  background: #0a0a14;
+  border: 2px solid #1c1c32;
+  border-radius: 6px;
+  padding: 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.bottle-card:hover { border-color: #e94560; transform: translateY(-2px); }
+.bottle-card .bottle-emoji { font-size: 28px; display: block; margin-bottom: 2px; }
+.bottle-card .bottle-name { font-size: 5px; color: #aaa; line-height: 1.3; }
+.bottle-card .bottle-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #e94560;
+  color: #fff;
+  font-size: 6px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  min-width: 16px;
+  text-align: center;
+}
+
+.bottle-card.sell-mode {
+  border-color: #FF9800;
+  background: rgba(255,152,0,0.05);
+}
+
+.bottle-card .sell-price {
+  font-size: 6px;
+  color: #f0c040;
+  margin-top: 2px;
+}
+
+/* ===== Sell Button ===== */
+.sell-toggle {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 6px;
+  padding: 4px 8px;
+  background: #333;
+  color: #aaa;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+.sell-toggle.active { background: #FF9800; color: #000; border-color: #FF9800; }
+
+/* ===== Synth Page ===== */
+.synth-section {
+  background: #0a0a14;
+  border: 2px solid #222;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.synth-section h3 {
+  font-size: 6px;
+  color: #e94560;
+  margin-bottom: 6px;
+}
+
+.synth-slots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.synth-slot {
+  width: 60px;
+  height: 60px;
+  background: #060610;
+  border: 2px dashed #333;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.synth-slot.filled { border-style: solid; border-color: #e94560; }
+.synth-slot:hover { border-color: #e94560; }
+
+.synth-plus {
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.synth-arrow {
+  font-size: 18px;
+  color: #9C27B0;
+  display: flex;
+  align-items: center;
+  margin: 0 2px;
+}
+
+.synth-result {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #1a1a2e, #0f3460);
+  border: 2px solid #9C27B0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  box-shadow: 0 0 12px rgba(156,39,176,0.3);
+}
+
+.synth-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 7px;
+  padding: 8px 16px;
+  background: #6A1B9A;
+  color: #fff;
+  border: 2px solid #9C27B0;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 6px;
+  display: block;
+  width: 100%;
+  transition: all 0.15s;
+}
+.synth-btn:hover { background: #9C27B0; }
+.synth-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.synth-fee {
+  font-size: 5px;
+  color: #f0c040;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ===== Blind Box ===== */
+.blind-box {
+  text-align: center;
+}
+
+.blind-box-chest {
+  font-size: 48px;
+  margin: 8px 0;
+  animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.blind-box-progress {
+  font-size: 5px;
+  color: #888;
+  margin: 4px 0;
+}
+
+.blind-box-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 7px;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #FF9800, #FF5722);
+  color: #fff;
+  border: 2px solid #FF9800;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,152,0,0.3);
+}
+.blind-box-btn:disabled { 
+  background: #333;
+  border-color: #555;
+  color: #666;
+  box-shadow: none;
+}
+
+/* ===== Album Page ===== */
+.album-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.album-progress {
+  font-size: 6px;
+  color: #f0c040;
+}
+
+.album-category {
+  margin-bottom: 10px;
+}
+
+.album-cat-title {
+  font-size: 6px;
+  color: #888;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+}
+
+.album-bottle {
+  background: #0a0a14;
+  border: 2px solid #1c1c32;
+  border-radius: 4px;
+  padding: 3px;
+  text-align: center;
+  font-size: 20px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.album-bottle.locked {
+  opacity: 0.25;
+  filter: grayscale(100%);
+}
+
+.album-bottle.owned {
+  border-color: #4CAF50;
+}
+
+/* ===== Tab Bar ===== */
+#tab-bar {
+  display: flex;
+  background: #0f3460;
+  border-top: 2px solid #1a1a2e;
+  flex-shrink: 0;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 2px;
+  font-size: 6px;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.15s;
+  gap: 2px;
+}
+
+.tab .tab-icon {
+  font-size: 16px;
+}
+
+.tab.active {
+  color: #e94560;
+  background: #16213e;
+}
+
+.tab:hover { color: #aaa; }
+
+/* ===== Animation Effects ===== */
+.legendary-glow {
+  animation: legendaryPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes legendaryPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,152,0,0.6); }
+  50% { box-shadow: 0 0 20px rgba(255,152,0,0.9), 0 0 40px rgba(255,152,0,0.3); }
+}
+
+.limited-shine {
+  animation: limitedShine 2s ease-in-out infinite;
+}
+
+@keyframes limitedShine {
+  0%, 100% { box-shadow: 0 0 6px rgba(255,215,0,0.4); }
+  50% { box-shadow: 0 0 16px rgba(255,215,0,0.8), 0 0 30px rgba(255,215,0,0.3); }
+}
+
+/* ===== Design notes panel ===== */
+.design-note {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #16213e;
+  border: 1px solid #e94560;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 5px;
+  color: #888;
+  max-width: 200px;
+  line-height: 1.6;
+}
+
+.design-note strong { color: #e94560; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span>9:41</span>
+    <span>📶 🔋</span>
+  </div>
+
+  <!-- Page Container -->
+  <div id="page-container">
+
+    <!-- ========== PAGE 1: 贩卖机 ========== -->
+    <div class="page active" id="page-machine">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <button class="sign-btn">📅 签到 +20</button>
+        <div class="coin-badge">
+          <span class="coin-icon">🪙</span>
+          <span id="coin-display">1,280</span>
+        </div>
+      </div>
+
+      <!-- Lucky Bar -->
+      <div class="lucky-bar">
+        <span class="lucky-label">🍀</span>
+        <div class="lucky-track"><div class="lucky-fill" style="width:65%"></div></div>
+        <span class="lucky-count">21/30</span>
+      </div>
+
+      <!-- Machine Header -->
+      <div class="machine-header">
+        <button class="machine-nav" onclick="prevMachine()">◀</button>
+        <span class="machine-title">🥤 汽水贩卖机</span>
+        <button class="machine-nav" onclick="nextMachine()">▶</button>
+      </div>
+
+      <!-- Machine Body -->
+      <div class="machine-frame">
+        <div class="machine-top">VENDING MACHINE · SODA</div>
+        <div class="machine-body-inner">
+          <!-- Glass Window with 5x4 grid -->
+          <div class="glass-window">
+            <div class="bottle-slot filled legendary legendary-glow">
+              <span class="bottle-emoji">🍾</span>
+              <span class="rarity-dot dot-legendary"></span>
+            </div>
+            <div class="bottle-slot filled epic">
+              <span class="bottle-emoji">🧃</span>
+              <span class="rarity-dot dot-epic"></span>
+            </div>
+            <div class="bottle-slot filled rare">
+              <span class="bottle-emoji">🥤</span>
+              <span class="rarity-dot dot-rare"></span>
+            </div>
+            <div class="bottle-slot filled limited limited-shine">
+              <span class="bottle-emoji">🧋</span>
+              <span class="rarity-dot dot-legendary"></span>
+            </div>
+            <div class="bottle-slot"><span class="bottle-emoji">❓</span></div>
+            
+            <div class="bottle-slot filled"><span class="bottle-emoji">🧊</span><span class="rarity-dot dot-common"></span></div>
+            <div class="bottle-slot filled epic"><span class="bottle-emoji">🍹</span><span class="rarity-dot dot-epic"></span></div>
+            <div class="bottle-slot"><span class="bottle-emoji">❓</span></div>
+            <div class="bottle-slot filled"><span class="bottle-emoji">🧉</span><span class="rarity-dot dot-precious"></span></div>
+            <div class="bottle-slot filled"><span class="bottle-emoji">🥛</span><span class="rarity-dot dot-common"></span></div>
+            
+            <div class="bottle-slot"><span class="bottle-emoji">❓</span></div>
+            <div class="bottle-slot filled rare"><span class="bottle-emoji">🍶</span><span class="rarity-dot dot-rare"></span></div>
+            <div class="bottle-slot filled"><span class="bottle-emoji">🧋</span><span class="rarity-dot dot-common"></span></div>
+            <div class="bottle-slot"><span class="bottle-emoji">❓</span></div>
+            <div class="bottle-slot filled legendary legendary-glow"><span class="bottle-emoji">🏆</span><span class="rarity-dot dot-legendary"></span></div>
+            
+            <div class="bottle-slot filled"><span class="bottle-emoji">🥃</span><span class="rarity-dot dot-precious"></span></div>
+            <div class="bottle-slot"><span class="bottle-emoji">❓</span></div>
+            <div class="bottle-slot filled rare"><span class="bottle-emoji">🍸</span><span class="rarity-dot dot-rare"></span></div>
+            <div class="bottle-slot filled"><span class="bottle-emoji">🧃</span><span class="rarity-dot dot-common"></span></div>
+            <div class="bottle-slot filled limited limited-shine"><span class="bottle-emoji">💎</span><span class="rarity-dot dot-legendary"></span></div>
+          </div>
+
+          <!-- Pull Buttons -->
+          <div class="pull-buttons">
+            <button class="pull-btn single">
+              🎰 单抽
+              <span class="cost">🪙 10</span>
+            </button>
+            <button class="pull-btn ten">
+              🎰 十连抽
+              <span class="cost">🪙 90</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pull Result -->
+      <div class="pull-result">
+        <span style="color:#888;font-size:6px">点击抽卡按钮获得饮料瓶...</span>
+      </div>
+    </div>
+
+    <!-- ========== PAGE 2: 背包 ========== -->
+    <div class="page" id="page-backpack">
+      <div class="top-bar">
+        <span style="font-size:7px;color:#e94560">🎒 我的瓶子</span>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button class="sell-toggle" id="sell-toggle" onclick="toggleSellMode()">💱 卖出</button>
+          <div class="coin-badge">
+            <span class="coin-icon">🪙</span>
+            <span id="coin-display-bp">1,280</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">
+        ⭐⭐⭐⭐⭐ 传说
+        <span style="color:#FF9800;float:right">2种</span>
+      </div>
+      <div class="bottle-gallery">
+        <div class="bottle-card legendary legendary-glow">
+          <span class="bottle-emoji">🍾</span>
+          <span class="bottle-name">黄金<br>香槟</span>
+          <span class="bottle-count">1</span>
+        </div>
+        <div class="bottle-card legendary legendary-glow">
+          <span class="bottle-emoji">🏆</span>
+          <span class="bottle-name">冠军<br>特饮</span>
+          <span class="bottle-count">1</span>
+        </div>
+      </div>
+
+      <div class="section-title">
+        ⭐⭐⭐⭐ 史诗
+        <span style="color:#9C27B0;float:right">5种</span>
+      </div>
+      <div class="bottle-gallery">
+        <div class="bottle-card epic">
+          <span class="bottle-emoji">🧃</span>
+          <span class="bottle-name">紫晶<br>果汁</span>
+          <span class="bottle-count">2</span>
+        </div>
+        <div class="bottle-card epic">
+          <span class="bottle-emoji">🍹</span>
+          <span class="bottle-name">彩虹<br>特调</span>
+          <span class="bottle-count">3</span>
+        </div>
+        <div class="bottle-card epic">
+          <span class="bottle-emoji">🍷</span>
+          <span class="bottle-name">暗夜<br>葡萄</span>
+          <span class="bottle-count">1</span>
+        </div>
+        <div class="bottle-card epic">
+          <span class="bottle-emoji">🧪</span>
+          <span class="bottle-name">魔法<br>药水</span>
+          <span class="bottle-count">1</span>
+        </div>
+      </div>
+
+      <div class="section-title">
+        ⭐⭐⭐ 珍贵
+        <span style="color:#2196F3;float:right">8种</span>
+      </div>
+      <div class="bottle-gallery">
+        <div class="bottle-card rare">
+          <span class="bottle-emoji">🥤</span>
+          <span class="bottle-name">经典<br>可乐</span>
+          <span class="bottle-count">5</span>
+        </div>
+        <div class="bottle-card rare">
+          <span class="bottle-emoji">🍶</span>
+          <span class="bottle-name">抹茶<br>拿铁</span>
+          <span class="bottle-count">3</span>
+        </div>
+        <div class="bottle-card rare">
+          <span class="bottle-emoji">🍸</span>
+          <span class="bottle-name">蓝色<br>海洋</span>
+          <span class="bottle-count">4</span>
+        </div>
+        <div class="bottle-card rare">
+          <span class="bottle-emoji">🥃</span>
+          <span class="bottle-name">焦糖<br>布丁</span>
+          <span class="bottle-count">2</span>
+        </div>
+      </div>
+
+      <div class="section-title">
+        🔥 限定瓶
+        <span style="color:#FFD700;float:right">3种</span>
+      </div>
+      <div class="bottle-gallery">
+        <div class="bottle-card limited limited-shine">
+          <span class="bottle-emoji">💎</span>
+          <span class="bottle-name">冬日<br>限定</span>
+          <span class="bottle-count">1</span>
+        </div>
+        <div class="bottle-card limited limited-shine">
+          <span class="bottle-emoji">🧋</span>
+          <span class="bottle-name">樱花<br>限定</span>
+          <span class="bottle-count">1</span>
+        </div>
+        <div class="bottle-card limited limited-shine">
+          <span class="bottle-emoji">🌸</span>
+          <span class="bottle-name">春节<br>限定</span>
+          <span class="bottle-count">1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE 3: 合成台 ========== -->
+    <div class="page" id="page-synth">
+      <div class="top-bar">
+        <span style="font-size:7px;color:#e94560">⚗️ 合成台</span>
+        <div class="coin-badge">
+          <span class="coin-icon">🪙</span>
+          <span id="coin-display-sy">1,280</span>
+        </div>
+      </div>
+
+      <!-- 三合一合成 -->
+      <div class="synth-section">
+        <h3>🔮 三合一升级</h3>
+        <div style="display:flex;align-items:center;gap:4px;justify-content:center;flex-wrap:wrap">
+          <div class="synth-slots">
+            <div class="synth-slot filled">🥤</div>
+            <div class="synth-slot filled">🥤</div>
+            <div class="synth-slot filled">🥤</div>
+          </div>
+          <span class="synth-arrow">➡️</span>
+          <div class="synth-result">✨</div>
+        </div>
+        <div class="synth-fee">合成费用: 🪙 10</div>
+        <button class="synth-btn">合成升级</button>
+      </div>
+
+      <!-- 配方合成 -->
+      <div class="synth-section">
+        <h3>📜 配方合成 (V1)</h3>
+        <div style="text-align:center;padding:20px;font-size:6px;color:#555">
+          🔒 即将开放<br>
+          <span style="font-size:5px;color:#444;margin-top:6px;display:block">特定组合解锁唯一珍藏品</span>
+        </div>
+      </div>
+
+      <!-- 阶段盲抽 -->
+      <div class="synth-section blind-box">
+        <h3>🎁 阶段盲抽</h3>
+        <div class="blind-box-chest">📦</div>
+        <div class="blind-box-progress">收集进度: 21/30 种新瓶子</div>
+        <div style="margin-top:4px">
+          <div class="lucky-track" style="margin:0 auto;width:200px">
+            <div class="lucky-fill" style="width:70%"></div>
+          </div>
+        </div>
+        <br>
+        <button class="blind-box-btn" disabled>需收集30种 (21/30)</button>
+      </div>
+    </div>
+
+    <!-- ========== PAGE 4: 图鉴 ========== -->
+    <div class="page" id="page-album">
+      <div class="top-bar">
+        <span style="font-size:7px;color:#e94560">📖 图鉴</span>
+        <div class="album-progress">21/40 收集</div>
+      </div>
+
+      <div class="album-category">
+        <div class="album-cat-title">
+          <span>🥤 汽水类</span>
+          <span>5/8</span>
+        </div>
+        <div class="album-grid">
+          <div class="album-bottle owned">🥤</div>
+          <div class="album-bottle owned">🍹</div>
+          <div class="album-bottle owned">🧃</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle owned">🧊</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle owned">🥛</div>
+          <div class="album-bottle locked">❓</div>
+        </div>
+      </div>
+
+      <div class="album-category">
+        <div class="album-cat-title">
+          <span>🍵 茶饮类</span>
+          <span>4/8</span>
+        </div>
+        <div class="album-grid">
+          <div class="album-bottle owned">🍶</div>
+          <div class="album-bottle owned">🧋</div>
+          <div class="album-bottle owned">🧉</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle owned">🍵</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+        </div>
+      </div>
+
+      <div class="album-category">
+        <div class="album-cat-title">
+          <span>☕ 咖啡类</span>
+          <span>3/6</span>
+        </div>
+        <div class="album-grid">
+          <div class="album-bottle owned">☕</div>
+          <div class="album-bottle owned">🍵</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle owned">🫖</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+        </div>
+      </div>
+
+      <div class="album-category">
+        <div class="album-cat-title">
+          <span>💎 限定瓶</span>
+          <span style="color:#FFD700">3/10</span>
+        </div>
+        <div class="album-grid">
+          <div class="album-bottle owned limited-shine">💎</div>
+          <div class="album-bottle owned limited-shine">🧋</div>
+          <div class="album-bottle owned limited-shine">🌸</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle locked">❓</div>
+        </div>
+      </div>
+
+      <div class="album-category">
+        <div class="album-cat-title">
+          <span>⚡ 能量类</span>
+          <span>3/4</span>
+        </div>
+        <div class="album-grid">
+          <div class="album-bottle owned">⚡</div>
+          <div class="album-bottle owned">🔋</div>
+          <div class="album-bottle locked">❓</div>
+          <div class="album-bottle owned">💪</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <nav id="tab-bar">
+    <div class="tab active" data-page="machine">
+      <span class="tab-icon">🏪</span>
+      <span>贩卖机</span>
+    </div>
+    <div class="tab" data-page="backpack">
+      <span class="tab-icon">🎒</span>
+      <span>背包</span>
+    </div>
+    <div class="tab" data-page="synth">
+      <span class="tab-icon">⚗️</span>
+      <span>合成</span>
+    </div>
+    <div class="tab" data-page="album">
+      <span class="tab-icon">📖</span>
+      <span>图鉴</span>
+    </div>
+  </nav>
+</div>
+
+<!-- Design Notes -->
+<div class="design-note">
+  <strong>🎨 设计规范</strong><br>
+  字体: Press Start 2P<br>
+  主色: #16213e 深蓝<br>
+  强调: #e94560 红<br>
+  金币: #f0c040 金<br>
+  稀有度: 灰/绿/蓝/紫/橙
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('#tab-bar .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const pageName = tab.dataset.page;
+    document.querySelectorAll('#tab-bar .tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageName).classList.add('active');
+  });
+});
+
+// Sell mode toggle
+let sellMode = false;
+function toggleSellMode() {
+  sellMode = !sellMode;
+  const btn = document.getElementById('sell-toggle');
+  btn.textContent = sellMode ? '💱 取消' : '💱 卖出';
+  btn.classList.toggle('active', sellMode);
+  document.querySelectorAll('#page-backpack .bottle-card').forEach(card => {
+    if (sellMode) {
+      card.classList.add('sell-mode');
+      const count = parseInt(card.querySelector('.bottle-count')?.textContent) || 1;
+      if (!card.querySelector('.sell-price')) {
+        const price = document.createElement('span');
+        price.className = 'sell-price';
+        price.textContent = '🪙' + (count * 2);
+        card.appendChild(price);
+      }
+    } else {
+      card.classList.remove('sell-mode');
+      card.querySelector('.sell-price')?.remove();
+    }
+  });
+}
+
+// Machine navigation (placeholder)
+let currentMachine = 0;
+const machines = ['🥤 汽水贩卖机', '🍵 茶饮贩卖机', '🎲 混合贩卖机', '💎 限定·珍藏'];
+function prevMachine() {
+  currentMachine = (currentMachine - 1 + machines.length) % machines.length;
+  document.querySelector('.machine-title').textContent = machines[currentMachine];
+}
+function nextMachine() {
+  currentMachine = (currentMachine + 1) % machines.length;
+  document.querySelector('.machine-title').textContent = machines[currentMachine];
+}
+</script>
+
+</body>
+</html>
